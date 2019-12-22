@@ -23,23 +23,23 @@ export class AuthService {
     this.photoUrl.next(photoUrl);
   }
 
-  login(model: any) {
-    return this.http.post(this.baseUrl + 'login', model).pipe(
+  login(user: User) {
+    return this.http.post(this.baseUrl + 'login', user).pipe(
       map((response: any) => {
-        const user = response;
+        const userReturned = response;
         if (user) {
-          localStorage.setItem('token', user.token);
-          localStorage.setItem('user', JSON.stringify(user.user));
-          this.decodedToken = this.jwtHelper.decodeToken(user.token);
-          this.currentUser = user.user;
+          localStorage.setItem('token', userReturned.token);
+          localStorage.setItem('user', JSON.stringify(userReturned.user));
+          this.decodedToken = this.jwtHelper.decodeToken(userReturned.token);
+          this.currentUser = userReturned.user;
           this.changeMemberPhoto(this.currentUser.photoUrl);
         }
       })
     );
   }
 
-  register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model);
+  register(user: User) {
+    return this.http.post(this.baseUrl + 'register', user);
   }
 
   loggedIn() {
